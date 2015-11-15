@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Carabid-workshop by klevan</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Carabid-workshop</h1>
+          <h2>A workshop about understanding NEON carabid data</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/klevan/carabid-workshop/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/klevan/carabid-workshop/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/klevan/carabid-workshop" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h3>
+<a id="a-neon-workwithdata-event" class="anchor" href="#a-neon-workwithdata-event" aria-hidden="true"><span class="octicon octicon-link"></span></a>A NEON #WorkWithData Event</h3>
+
+<p><strong>Date:</strong> 15 November 2015 - Entomological Society of America Meeting</p>
+
+<p><strong>Location:</strong> Minneapolis, Minnesota - Minneapolis Convention Center Rm 208 AB</p>
+
+<h2>
+<a id="background-materials" class="anchor" href="#background-materials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background Materials</h2>
+
+<h3>
+<a id="things-to-do-before-the-workshop" class="anchor" href="#things-to-do-before-the-workshop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Things to Do Before the Workshop</h3>
+
+<p>This is a demonstration based brown-bag and thus nothing is required to attend
+this workshop! However, the data used in the workshop are available to download
+for further exploration.</p>
+
+<h4>
+<a id="download-the-data" class="anchor" href="#download-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download The Data</h4>
+
+<h3>
+<a id="workshop-instructor" class="anchor" href="#workshop-instructor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Workshop Instructor</h3>
+
+<ul>
+<li>
+<strong><a href="http://www.neoninc.org/about/staff/katie-levan">Katherine LeVan</a> <a href="https://github.com/klevan" class="user-mention">@klevan</a></strong>, 
+Staff Scientist, NEON, Inc </li>
+</ul>
+
+<h2>
+<a id="workwithdata-hashtag" class="anchor" href="#workwithdata-hashtag" aria-hidden="true"><span class="octicon octicon-link"></span></a>#WorkWithData Hashtag</h2>
+
+<p>Please tweet using the hashtag: #WorkWithData" during this workshop!
+Also you can tweet at <a href="https://twitter.com/neoninc" target="_blank"> @neoninc</a>!</p>
+
+<h2>
+<a id="schedule" class="anchor" href="#schedule" aria-hidden="true"><span class="octicon octicon-link"></span></a>SCHEDULE</h2>
+
+<p>Please note that we are still developing the agenda for this workshop. The 
+schedule below is subject to change.</p>
+
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1:00</td>
+<td>About NEON</td>
+</tr>
+<tr>
+<td>1:30</td>
+<td>A look at Carabid patterns and trends</td>
+</tr>
+<tr>
+<td>2:00</td>
+<td>Partner projects</td>
+</tr>
+<tr>
+<td>2:45</td>
+<td>Q&amp;A</td>
+</tr>
+<tr>
+<td>3:00</td>
+<td>------- Wrap Up! -------</td>
+</tr>
+</tbody>
+</table>
+
+<h1>
+<a id="about-the-data" class="anchor" href="#about-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>About the Data</h1>
+
+<p>The carabid data that we will use for this brown-bag were collected at 13 sites in 2014. NEON carabid data are stored in three tables: field collection data, sorting data and pinning data. </p>
+
+<ul>
+<li><p>Field collection data contains information related to the location of each trap (i.e., latitude, longitude, NLCD class) and metadata about the sampling event (i.e., when traps were set, 'setDate'; the date of trap collection, 'collectDate'; the number of days a given trap was in the field, 'daysOfTrapping'). Unique collection events have a unique sampleID (format = plotID.trapID.collectDate).</p></li>
+<li><p>Sorting data contains information about what specimens were found in traps. Sample types include vertebrate bycatch (herptiles = 'vert bycatch herp'; mammals = 'vert bycatch mam'), non-Carabidae invertebrate bycatch (labelled 'invert bycatch'), and all information about carabids. Older data (2014 and prior) divide Carabid data into two categories: 'common carabid', for which all taxonomic and abundance data is listed in the sorting dataset, and 'other carabid', a catch-all category indicating that the relevant taxonomic and abundance information for specimens with that sampleID is provided in the pinning dataset. Unique records have a unique 'associatedSampleID' (format = plotID.trapID.collectDate.taxonID.tubeID; records where taxonomic information is unknown use shorthand codes based on sampleType-'ib' for invertebrate bycatch, 'vb' for vertebrate bycatch, 'cc' for common carabid, 'oc' for other carabid).</p></li>
+<li><p>Pinning data contains information about all carabids that were pinned or pointed. Each sample in the pinning dataset has a unique identifier (individualID). The information in the pinning table are traceable to the sorting data via the a sampleID. Every 'sampleID' in the pinning data matches an 'associatedSampleID' in the sorting dataset. </p></li>
+</ul>
+        </section>
+
+        <footer>
+          Carabid-workshop is maintained by <a href="https://github.com/klevan">klevan</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>

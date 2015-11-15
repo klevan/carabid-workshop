@@ -163,13 +163,17 @@ hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps d
 <p>Does latitude explain beetle abundance or richness? The relationship can be examined at the level of the trap, the plot or the site; but the pattern may be driven by substantial variation seen in the middle latitudes. </p>
 
 <pre><code>plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Abundance by Site',cex.main=3)
-sites &lt;- sites[order(sites[,'numCarabidsCaught']),]; sites$intensity &lt;- heat.colors(13)[13:1]; sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+sites &lt;- sites[order(sites[,'numCarabidsCaught']),]
+sites$intensity &lt;- heat.colors(13)[13:1]
+sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
 points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
 </code></pre>
 
 <p><img src="images/by_site_abundance_map.png" alt="Map of beetle abundance">
     plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
-    sites &lt;- sites[order(sites[,'beetleRichness']),]; sites$intensity &lt;- heat.colors(13)[13:1]; sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+    sites &lt;- sites[order(sites[,'beetleRichness']),]
+    sites$intensity &lt;- heat.colors(13)[13:1] 
+    sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
     points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
 <img src="images/by_site_richness_map.png" alt="Map of beetle richness"></p>
 
@@ -205,7 +209,9 @@ plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude
 
 <p>Precipitation was not homogeneous and largely fell in the southern and eastern US. Patterns of beetle abundance varied accordingly.
     plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
-    sites &lt;- sites[order(sites[,'prcp']),]; sites$intensity &lt;- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue'); sites$cex &lt;- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
+    sites &lt;- sites[order(sites[,'prcp']),]
+    sites$intensity &lt;- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue')
+    sites$cex &lt;- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
     points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)</p>
 
 <p><img src="images/by_site_rainfall_map.png" alt="Distribution of rainfall at across sites">

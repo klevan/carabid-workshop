@@ -198,6 +198,30 @@ for (j in 1:dim(trapCalc)[1]){
 # Print summary stats of sampling effort
 print(trapCalc)
 
+######
+# MAPS
+######
+par(mfrow=c(1,1))
+# Map of beetle abundance by site
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Abundance by Site',cex.main=3)
+sites <- sites[order(sites[,'numCarabidsCaught']),]; sites$intensity <- heat.colors(13)[13:1]; sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+
+# Map of beetle Richness by site
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
+sites <- sites[order(sites[,'beetleRichness']),]; sites$intensity <- heat.colors(13)[13:1]; sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+
+# Rainfall map
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
+sites <- sites[order(sites[,'prcp']),]; sites$intensity <- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue'); sites$cex <- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+
+# Plot invasive species
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_div1 %>% filter(taxonID=='CARNEM')->CARNEM; bet_div1 %>% filter(taxonID=='TETLAE')->TETLAE
+points(CARNEM$decimalLongitude,CARNEM$decimalLatitude,pch=21,bg='violet',cex=2.5)
+points(TETLAE$decimalLongitude,TETLAE$decimalLatitude,pch=21,bg='orange',cex=2.5)
+
 # Latitudinal Gradients
 par(mfrow=c(1,2))
 plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="deepskyblue")
@@ -220,71 +244,8 @@ nlcd$color <- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkoliv
 barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
 barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
 
-
-
-######
-# MAPS
-######
-# Map of beetle abundance by site
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Abundance by Site',cex.main=3)
-sites <- sites[order(sites[,'numCarabidsCaught']),]; sites$intensity <- heat.colors(13)[13:1]; sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
-points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-
-# Map of beetle Richness by site
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
-sites <- sites[order(sites[,'beetleRichness']),]; sites$intensity <- heat.colors(13)[13:1]; sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
-points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-
-# Rainfall map
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
-sites <- sites[order(sites[,'prcp']),]; sites$intensity <- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue'); sites$cex <- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
-points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-
-# Plot invasive species
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_div1 %>% filter(taxonID=='CARNEM')->CARNEM; bet_div1 %>% filter(taxonID=='TETLAE')->TETLAE
-points(CARNEM$decimalLongitude,CARNEM$decimalLatitude,pch=21,bg='violet',cex=2.5)
-points(TETLAE$decimalLongitude,TETLAE$decimalLatitude,pch=21,bg='orange',cex=2.5)
-
-par()
-# Plotting at a single site: CPER
-bet_div1 %>% filter(siteID=='CPER')-> C
-plot(C$decimalLongitude,C$decimalLatitude)
-
-for (i in sort(unique(C$collectDate))){
-  C %>% 
-    filter(collectDate==i,taxonID=="PASELO")-> p
-  plot(p$decimalLongitude,p$decimalLatitude, col='black',
-       main=as.Date(i,origin = as.Date('1970-01-01')),xlab="Longitude",ylab="Latitude",
-       ylim=c(min(C$decimalLatitude),max(C$decimalLatitude)),
-       xlim=c(max(C$decimalLongitude),min(C$decimalLongitude)))
-  C %>% filter(collectDate==i,taxonID=='CRADUB')-> c
-  points(c$decimalLongitude,c$decimalLatitude, bg='red',pch=21)
-}
-C %>% filter(taxonID=='PASELO')-> PASELO; C %>% filter(taxonID=='CRADUB')-> CRADUB
-for (i in sort(unique(C$taxonID))){
-  C %>% 
-    filter(taxonID==i)->x 
-  hist(x$collectDate,main=i,breaks=10,col='black')
-}
-
-
-j=1
-for (i in sort(unique(C$taxonID))){
-  C %>% 
-    filter(taxonID==i)->x
-  if(dim(x)[1]>1){
-    if((density(x$julian)$n)>10){
-    plot(density(x$julian),main=i,
-         xlim=c(0,365),ylim=c(0,0.1))  
-    polygon(density(x$julian),col=rainbow(13)[j], border="black")
-    j=j+1
-    }
-  }
-}
-
-
-
 # Diving into site seasonal abundances
+par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1))
 for (i in sort(unique(sites$siteID))){
   # Isolate the diversity within a site
   bet_div1 %>% 
@@ -320,21 +281,4 @@ for (i in sort(unique(sites$siteID))){
   plot(a$collectDate,a$count,bg=a$color,pch=21,cex=3,cex.axis=2,
        xlab='Date',ylab='Abundance',main=sites$locales[match(i,sites$siteID)])
 }
-
-############
-# PERMANOVA
-############
-spp <- sort(unique(bet_div1$scientificName))[2:145]
-species <- matrix(rep(0,length(spp)*length(sites$siteID)),ncol = length(spp),nrow = length(sites$siteID),byrow = TRUE,dimnames = list(sites$siteID,spp))
-for (i in sites$siteID){
-  for (j in spp){
-    bet_div1 %>% 
-      filter(siteID==i,scientificName==j) -> div
-    species[match(i,sites$siteID),match(j,spp)] <- dim(div)[1]
-  }
-}
-species <- species[c(1:8,10:12),] # Remove TALL and ONAQ, because they have no records in the matrix 'species'
-adonis(species~decimalLatitude+prcp,data=sites[c(2:6,8:13),],permutations = 9999)
-spp <- metaMDS(species); spp$domains <- c(rep('D01',2),'D02',rep('D03',3),'D05','D07','D09',rep('D10',2))
-spp <- as.data.frame(cbind(as.numeric(spp$points[,1]),as.numeric(spp$points[,2]),spp$domains)); colnames(spp) <- c('MDS1','MDS2','domainID')
-plot(spp$MDS1,spp$MDS2)
+rm(a,b,div,x,x_all,x_sort,x_pin,x_date)

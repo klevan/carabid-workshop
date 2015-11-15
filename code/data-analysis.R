@@ -216,9 +216,10 @@ plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)
 
 # Habitat effect on catch
 #boxplot(beetleAbundance~nlcdClass,data=bet_field_plot,ylim=c(0,100))
+par(mar=c(15,4.1,4.1,2.5))
 nlcd$color <- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
-barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="NLCD Class",cex.lab=1.5,cex.axis=2.5)
-barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="NLCD Class",cex.lab=1.5,cex.axis=2.5)
+barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
+barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
 
 
 

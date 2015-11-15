@@ -200,6 +200,14 @@ plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude
 
 <h3>
 <a id="habitat-and-beetle-distributions" class="anchor" href="#habitat-and-beetle-distributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Habitat and beetle distributions</h3>
+
+<p>NLCD class is an included variable describing the habitat in which traps are embedded. Habitat type certainly seems to influence observed abundance and (to a lesser extent) richness.
+    par(mar=c(15,4.1,4.1,2.5))
+    nlcd$color &lt;- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
+    barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
+    barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
+<img src="images/nlcd_abundance.png" alt="Effect of habitat type on measured beetle abundance">
+<img src="images/nlcd_richness.png" alt="Effect of habitat type on measured beetle richness"></p>
         </section>
 
         <footer>

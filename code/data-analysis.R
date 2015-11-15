@@ -18,9 +18,7 @@ library(vegan)
 ##############
 # The data in this github repository was downloaded on 8/7/2015
 # Replace 'pathToData' with the location of the carabid data downloaded from NEON's web portal
-if (file.exists('C:/Users/klevan/Documents/GitHub/entsoc-workshop/data/cleaned data')){
-  pathToData <- 'C:/Users/klevan/Documents/GitHub/entsoc-workshop/data/cleaned data'
-}
+pathToData <- 'C:/Users/klevan/Documents/GitHub/carabid-workshop/data/cleaned data'
 setwd(pathToData)
 
 bet_div <- read.csv(paste(pathToData,"carabidAbundanceData.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
@@ -28,10 +26,10 @@ bet_div1 <- read.csv(paste(pathToData,"carabidDiversityData.csv",sep='/'),string
 bet_field <- read.csv(paste(pathToData,"fieldData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE); bet_field$beetleAbundance <- as.numeric(bet_field$beetleAbundance); bet_field$beetleRichness <- as.numeric(bet_field$beetleRichness) 
 bet_sort <- read.csv(paste(pathToData,"sortData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 bet_pin <- read.csv(paste(pathToData,"pinData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
-weather <- read.csv(paste(substr(pathToData,1,53),"NOAA weather data for 2014.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
+weather <- read.csv(paste(substr(pathToData,1,54),"NOAA weather data for 2014.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 
 # Inputting NEON Domain info
-setwd(paste(substr(pathToData,1,53),'map data',sep='/'))
+setwd(paste(substr(pathToData,1,54),'map data',sep='/'))
 Ddbf<-read.dbf("NEON_Domains.dbf")
 Dmap<-readShapePoly("NEON_Domains.shp")
 crs(Dmap) <- "+proj=utm +units=m +ellps=WGS84"
@@ -178,12 +176,12 @@ rm(a)
 # Looking at data quality
 par(mfrow=c(1,2))
 # Traps were set out for 14 day intervals; deviations can be seen in the histogram
-hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping",cex.axis=2.5)
+hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")
 
 # 40 traps are deployed at each interval; occasionally traps are not deployed because of environmental or logistical reasons (i.e., plot flooding, staffing limitations)
 bet_field %>% 
   count(siteID,boutNumber) -> numTrapsDeployed
-hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout",cex.axis=2.5)
+hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")
 
 # Calculating summary stats for typical trapping interval
 trapCalc <- as.data.frame(unique(bet_field[c('siteID')])) # Create a new dataframe 'trapCalc' with the list of unique siteIDs

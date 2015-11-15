@@ -245,21 +245,6 @@ plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_di
 points(CARNEM$decimalLongitude,CARNEM$decimalLatitude,pch=21,bg='violet',cex=2.5)
 points(TETLAE$decimalLongitude,TETLAE$decimalLatitude,pch=21,bg='orange',cex=2.5)
 
-#Plot CARNEM through time
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); car %>% filter(species=='Carabus nemoralis')->CARNEM1
-points(CARNEM1$decimallongitude,CARNEM1$decimallatitude,pch=21,bg='red',cex=2)
-points(CARNEM$decimalLongitude,CARNEM$decimalLatitude,pch=21,bg='violet',cex=2.5)
-# Making maps of carabid occurences
-#for (i in sort(unique(bet_div1$scientificName))[2:145]){
-#  car %>% filter(species==i,is.na(Lat)==FALSE)-> a
-#  bet_div1 %>% filter(scientificName==i)->bet_div1a
-#  if (dim(a)[1]>0){
-#    plot(Dmap,col="#ADA96E",bg='#77BFC7',main=i,cex.main=3)
-#    points(a$Lon,a$Lat,col='#DC381F',pch=19,cex=2.5)
-#    points(bet_div1a$decimalLongitude,bet_div1a$decimalLatitude,bg='#893BFF',pch=21,cex=4)
-#  }
-#}
-
 par()
 # Plotting at a single site: CPER
 bet_div1 %>% filter(siteID=='CPER')-> C

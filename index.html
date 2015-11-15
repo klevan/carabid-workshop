@@ -115,20 +115,48 @@ schedule below is subject to change.</p>
 
 <p>The carabid data that we will use for this brown-bag were collected at 13 sites in 2014. NEON carabid data are stored in three tables: field collection data, sorting data and pinning data. </p>
 
+<h2>
+<a id="field-collection-data" class="anchor" href="#field-collection-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Field Collection Data</h2>
+
 <ul>
-<li>Field collection data contains information related to the location of each trap (i.e., latitude, longitude, NLCD class) and metadata about the sampling event (i.e., when traps were set, 'setDate'; the date of trap collection, 'collectDate'; the number of days a given trap was in the field, 'daysOfTrapping'). Unique collection events have a unique sampleID (format = plotID.trapID.collectDate).</li>
+<li>contains information related to the location of each trap (i.e., latitude, longitude, NLCD class) and metadata about the sampling event (i.e., when traps were set, 'setDate'; the date of trap collection, 'collectDate'; the number of days a given trap was in the field, 'daysOfTrapping'). Unique collection events have a unique sampleID (format = plotID.trapID.collectDate).</li>
 </ul>
 
 <p><img src="https://farm6.staticflickr.com/5311/5860792533_d02d0bdf8a_b.jpg" alt="Insect collection by pitfall trapping"></p>
 
+<h2>
+<a id="sorting-data" class="anchor" href="#sorting-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sorting Data</h2>
+
 <ul>
-<li>Sorting data contains information about what specimens were found in traps. Sample types include vertebrate bycatch (herptiles = 'vert bycatch herp'; mammals = 'vert bycatch mam'), non-Carabidae invertebrate bycatch (labelled 'invert bycatch'), and all information about carabids. Older data (2014 and prior) divide Carabid data into two categories: 'common carabid', for which all taxonomic and abundance data is listed in the sorting dataset, and 'other carabid', a catch-all category indicating that the relevant taxonomic and abundance information for specimens with that sampleID is provided in the pinning dataset. Unique records have a unique 'associatedSampleID' (format = plotID.trapID.collectDate.taxonID.tubeID; records where taxonomic information is unknown use shorthand codes based on sampleType-'ib' for invertebrate bycatch, 'vb' for vertebrate bycatch, 'cc' for common carabid, 'oc' for other carabid).
+<li>contains information about what specimens were found in traps. Sample types include vertebrate bycatch (herptiles = 'vert bycatch herp'; mammals = 'vert bycatch mam'), non-Carabidae invertebrate bycatch (labelled 'invert bycatch'), and all information about carabids. Older data (2014 and prior) divide Carabid data into two categories: 'common carabid', for which all taxonomic and abundance data is listed in the sorting dataset, and 'other carabid', a catch-all category indicating that the relevant taxonomic and abundance information for specimens with that sampleID is provided in the pinning dataset. Unique records have a unique 'associatedSampleID' (format = plotID.trapID.collectDate.taxonID.tubeID; records where taxonomic information is unknown use shorthand codes based on sampleType-'ib' for invertebrate bycatch, 'vb' for vertebrate bycatch, 'cc' for common carabid, 'oc' for other carabid).
 <img src="https://farm6.staticflickr.com/5159/5861346198_dcd8fb7a6f_b.jpg" alt="A mixed sample from a Carabid trap">
-</li>
-<li>Pinning data contains information about all carabids that were pinned or pointed. Each sample in the pinning dataset has a unique identifier (individualID). The information in the pinning table are traceable to the sorting data via the a sampleID. Every 'sampleID' in the pinning data matches an 'associatedSampleID' in the sorting dataset. 
+## Pinning data </li>
+<li>contains information about all carabids that were pinned or pointed. Each sample in the pinning dataset has a unique identifier (individualID). The information in the pinning table are traceable to the sorting data via the a sampleID. Every 'sampleID' in the pinning data matches an 'associatedSampleID' in the sorting dataset. 
 <img src="http://www.boldsystems.org/pics/NEONT/carabid546%2B1259940908.jpg" alt="A pinned Euryderus grossus">
-</li>
+## Data Format
+When downloaded from the portal, all data is divided by site. To look at all 13 sites from 2014 will require downloading 39 files (one field, sorting and pinning data for each site) and combining the datasheets across all sites for each type of data (i.e., field, sorting and pinning). I've included an R script that combines and cleans the 2014 data for easy use (available here: ) and the 39 original data files (located here: ). However, for those that just want the csv files that are the end result, I have provided them here.</li>
 </ul>
+
+<h1>
+<a id="looking-at-the-data" class="anchor" href="#looking-at-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Looking at the data</h1>
+
+<h2>
+<a id="field-collection" class="anchor" href="#field-collection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Field Collection</h2>
+
+<p>A brief look at the data shows that most sites collect all 40 traps on a 14 day interval; 81% of traps were collected on the 14 day cycle exactly and 62% collected absolutely every trap during a collection bout. Deviations were minor and in more than 85% of cases, field operations staff were able to reach at least 8 of 10 plots.
+`par(mfrow=c(1,2))</p>
+
+<h1>
+<a id="traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" class="anchor" href="#traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Traps were set out for 14 day intervals; deviations can be seen in the histogram</h1>
+
+<p>hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")</p>
+
+<h1>
+<a id="40-traps-are-deployed-at-each-interval-occasionally-traps-are-not-deployed-because-of-environmental-or-logistical-reasons-ie-plot-flooding-staffing-limitations" class="anchor" href="#40-traps-are-deployed-at-each-interval-occasionally-traps-are-not-deployed-because-of-environmental-or-logistical-reasons-ie-plot-flooding-staffing-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>40 traps are deployed at each interval; occasionally traps are not deployed because of environmental or logistical reasons (i.e., plot flooding, staffing limitations)</h1>
+
+<p>bet_field %&gt;% 
+  count(siteID,boutNumber) -&gt; numTrapsDeployed
+hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")`</p>
 
 <p><img src="images/sampling%20interval.png" alt=""></p>
         </section>

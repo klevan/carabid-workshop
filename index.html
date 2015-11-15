@@ -149,16 +149,31 @@ schedule below is subject to change.</p>
 
 <p>A brief look at the data shows that most sites collect all 40 traps on a 14 day interval; 81% of traps were collected on the 14 day cycle exactly and 62% collected absolutely every trap during a collection bout. Deviations were minor and in more than 85% of cases, field operations staff were able to reach at least 8 of 10 plots.</p>
 
-<p><code>par(mfrow=c(1,2))</code></p>
-
-<pre><code>hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")
-
+<pre><code>par(mfrow=c(1,2))
+hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")
 bet_field %&gt;% count(siteID,boutNumber) -&gt; numTrapsDeployed
-
-hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")&lt;/code&gt;
+hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")
 </code></pre>
 
 <p><img src="images/sampling%20interval.png" alt=""></p>
+
+<pre><code>plot(bet_field$decimalLatitude,bet_field$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="darkblue")
+plot(bet_field$decimalLatitude,bet_field$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="darkblue")
+</code></pre>
+
+<p><img src="images/by_trap.png" alt="Latitudinal gradients of beetle abundance and richness; data at the trap level"></p>
+
+<pre><code>plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="turquoise")
+plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="turquoise")
+</code></pre>
+
+<p><img src="images/by_plot.png" alt="Latitudinal gradients of beetle abundance and richness; data summarized at the plot level"></p>
+
+<pre><code>plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="deepskyblue")
+plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="deepskyblue")
+</code></pre>
+
+<p><img src="images/by_bout.png" alt="Latitudinal gradients of beetle abundance and richness; data summarized at the collection bout level"></p>
         </section>
 
         <footer>

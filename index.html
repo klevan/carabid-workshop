@@ -149,7 +149,7 @@ schedule below is subject to change.</p>
 
 <p>A brief look at the data shows that most sites collect all 40 traps on a 14 day interval; 81% of traps were collected on the 14 day cycle exactly and 62% collected absolutely every trap during a collection bout. Deviations were minor and in more than 85% of cases, field operations staff were able to reach at least 8 of 10 plots.</p>
 
-<p>```{r Figure 1}par(mfrow=c(1,2))</p>
+<p><code>par(mfrow=c(1,2))</code></p>
 
 <h1>
 <a id="traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" class="anchor" href="#traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Traps were set out for 14 day intervals; deviations can be seen in the histogram</h1>
@@ -161,7 +161,7 @@ schedule below is subject to change.</p>
 
 <p>bet_field %&gt;% 
   count(siteID,boutNumber) -&gt; numTrapsDeployed
-hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")```</p>
+hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")</p>
 
 <p><img src="images/sampling%20interval.png" alt=""></p>
         </section>

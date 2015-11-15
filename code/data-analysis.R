@@ -1,4 +1,11 @@
 rm(list = ls())
+############################
+# REPLACE with **YOUR** path
+############################
+path <- 'C:/Users/klevan/Documents/GitHub'
+
+
+
 ###########
 # LIBRARIES
 ###########
@@ -18,7 +25,7 @@ library(vegan)
 ##############
 # The data in this github repository was downloaded on 8/7/2015
 # Replace 'pathToData' with the location of the carabid data downloaded from NEON's web portal
-pathToData <- 'C:/Users/klevan/Documents/GitHub/carabid-workshop/data/cleaned data'
+pathToData <- paste(path,'carabid-workshop/data/cleaned data',sep='/')
 setwd(pathToData)
 
 bet_div <- read.csv(paste(pathToData,"carabidAbundanceData.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
@@ -26,10 +33,10 @@ bet_div1 <- read.csv(paste(pathToData,"carabidDiversityData.csv",sep='/'),string
 bet_field <- read.csv(paste(pathToData,"fieldData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE); bet_field$beetleAbundance <- as.numeric(bet_field$beetleAbundance); bet_field$beetleRichness <- as.numeric(bet_field$beetleRichness) 
 bet_sort <- read.csv(paste(pathToData,"sortData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 bet_pin <- read.csv(paste(pathToData,"pinData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
-weather <- read.csv(paste(substr(pathToData,1,54),"NOAA weather data for 2014.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
+weather <- read.csv(paste(path,'carabid-workshop/data',"NOAA weather data for 2014.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 
 # Inputting NEON Domain info
-setwd(paste(substr(pathToData,1,54),'map data',sep='/'))
+setwd(paste(path,'carabid-workshop/data','map data',sep='/'))
 Ddbf<-read.dbf("NEON_Domains.dbf")
 Dmap<-readShapePoly("NEON_Domains.shp")
 crs(Dmap) <- "+proj=utm +units=m +ellps=WGS84"

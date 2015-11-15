@@ -210,21 +210,9 @@ plot(bet_field$decimalLatitude,bet_field$beetleAbundance,xlab='Latitude',ylab='B
 plot(bet_field$decimalLatitude,bet_field$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="darkblue")
 
 
-# Seasonal Abundance and Richness for each site
-for(i in unique(bet_field_bout$siteID)){
-  bet_field_bout %>% filter(siteID==i) -> b; b <- b[order(b[,'collectDate']),]
-  sites %>% filter(siteID==i) %>% select(locales) -> b1
-  plot(b$collectDate,b$beetleAbundance,bg=21,main=i,xlab='Collection Date',ylab="Beetle Abundance across the Site",type = 'l',ylim = c(0,1000))
-  #points(b$collectDate,b$beetleRichness,bg=21,main=i,xlab='Collection Date',ylab="Beetle Richness across the Site",type = 'h',add=TRUE)
-  print(paste(i,max(b$beetleAbundance),max(b$beetleRichness)))
-  rm(b,b1)
-}
-
-plot(bet_field$decimalLatitude,bet_field$beetleRichness); a <- (lm(beetleRichness~decimalLatitude,data=bet_field));summary(a);abline(a)
-
 # Weather effects on catch
-plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance')
-plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance')
+plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per trap',bg='blue',pch=21)
+plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)
 
 # Habitat effect on catch
 #boxplot(beetleAbundance~nlcdClass,data=bet_field_plot,ylim=c(0,100))

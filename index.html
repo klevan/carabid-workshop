@@ -149,19 +149,11 @@ schedule below is subject to change.</p>
 
 <p>A brief look at the data shows that most sites collect all 40 traps on a 14 day interval; 81% of traps were collected on the 14 day cycle exactly and 62% collected absolutely every trap during a collection bout. Deviations were minor and in more than 85% of cases, field operations staff were able to reach at least 8 of 10 plots.</p>
 
-<p><code>par(mfrow=c(1,2))</code></p>
-
-<h1>
-<a id="traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" class="anchor" href="#traps-were-set-out-for-14-day-intervals-deviations-can-be-seen-in-the-histogram" aria-hidden="true"><span class="octicon octicon-link"></span></a>Traps were set out for 14 day intervals; deviations can be seen in the histogram</h1>
-
-<p>hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")</p>
-
-<h1>
-<a id="40-traps-are-deployed-at-each-interval-occasionally-traps-are-not-deployed-because-of-environmental-or-logistical-reasons-ie-plot-flooding-staffing-limitations" class="anchor" href="#40-traps-are-deployed-at-each-interval-occasionally-traps-are-not-deployed-because-of-environmental-or-logistical-reasons-ie-plot-flooding-staffing-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>40 traps are deployed at each interval; occasionally traps are not deployed because of environmental or logistical reasons (i.e., plot flooding, staffing limitations)</h1>
-
-<p>bet_field %&gt;% 
+<p><code>par(mfrow=c(1,2))
+hist(bet_field$daysOfTrapping,xlim=c(0,30),col="black",main="Typical sampling interval",xlab="Days of trapping")
+bet_field %&gt;% 
   count(siteID,boutNumber) -&gt; numTrapsDeployed
-hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")</p>
+hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps deployed",xlab="Number of traps per site per bout")</code></p>
 
 <p><img src="images/sampling%20interval.png" alt=""></p>
         </section>

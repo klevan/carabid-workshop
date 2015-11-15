@@ -157,17 +157,31 @@ hist(numTrapsDeployed$n,xlim=c(0,40),col="black",main="Typical number of traps d
 
 <p><img src="images/sampling%20interval.png" alt=""></p>
 
+<h2>
+<a id="trends-and-patterns" class="anchor" href="#trends-and-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a>Trends and Patterns</h2>
+
+<p>Does latitude explain beetle abundance or richness? The relationship can be examined at the level of the trap, the plot or the site; but the pattern may be driven by substantial variation seen in the middle latitudes. </p>
+
+<h3>
+<a id="plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-trap-level" class="anchor" href="#plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-trap-level" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting latitudinal gradients of beetle abundance and richness at the trap level</h3>
+
 <pre><code>plot(bet_field$decimalLatitude,bet_field$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="darkblue")
 plot(bet_field$decimalLatitude,bet_field$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="darkblue")
 </code></pre>
 
 <p><img src="images/by_trap.png" alt="Latitudinal gradients of beetle abundance and richness; data at the trap level"></p>
 
+<h3>
+<a id="plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-plot-level" class="anchor" href="#plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-plot-level" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting latitudinal gradients of beetle abundance and richness at the plot level</h3>
+
 <pre><code>plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="turquoise")
 plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="turquoise")
 </code></pre>
 
 <p><img src="images/by_plot.png" alt="Latitudinal gradients of beetle abundance and richness; data summarized at the plot level"></p>
+
+<h3>
+<a id="plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-bout-level" class="anchor" href="#plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-bout-level" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting latitudinal gradients of beetle abundance and richness at the bout level</h3>
 
 <pre><code>plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="deepskyblue")
 plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="deepskyblue")

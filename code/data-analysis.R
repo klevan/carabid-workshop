@@ -215,7 +215,6 @@ plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Be
 plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)
 
 # Habitat effect on catch
-#boxplot(beetleAbundance~nlcdClass,data=bet_field_plot,ylim=c(0,100))
 par(mar=c(15,4.1,4.1,2.5))
 nlcd$color <- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
 barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
@@ -240,21 +239,6 @@ points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites
 plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
 sites <- sites[order(sites[,'prcp']),]; sites$intensity <- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue'); sites$cex <- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
 points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-
-# habitat map
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='NLCD by Site',cex.main=3)
-for(i in sites$siteID){
-  bet_field %>% 
-    filter(siteID==i,is.na(nlcdClass)==FALSE)-> a; a <- unique.data.frame(a[c('siteID','nlcdClass','plotID')]); a1 <- unique.data.frame(a[c('siteID','nlcdClass')])
-  for(j in a1$nlcdClass){
-    a %>% 
-      filter(nlcdClass==j)-> x 
-    a1$number[match(j,a1$nlcdClass)] <- dim(x)[1]
-    a1$color[match(j,a1$nlcdClass)] <- nlcd$color[match(j,nlcd$types)]
-  }
-  pie(a1$number,col = a1$color,labels = '',main = i)
-  rm(a,a1)
-}
 
 # Plot invasive species
 plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_div1 %>% filter(taxonID=='CARNEM')->CARNEM; bet_div1 %>% filter(taxonID=='TETLAE')->TETLAE

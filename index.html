@@ -169,13 +169,16 @@ sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
 points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
 </code></pre>
 
-<p><img src="images/by_site_abundance_map.png" alt="Map of beetle abundance">
-    plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
-    sites &lt;- sites[order(sites[,'beetleRichness']),]
-    sites$intensity &lt;- heat.colors(13)[13:1] 
-    sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
-    points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-<img src="images/by_site_richness_map.png" alt="Map of beetle richness"></p>
+<p><img src="images/by_site_abundance_map.png" alt="Map of beetle abundance"></p>
+
+<pre><code>plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
+sites &lt;- sites[order(sites[,'beetleRichness']),]
+sites$intensity &lt;- heat.colors(13)[13:1] 
+sites$cex &lt;- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+</code></pre>
+
+<p><img src="images/by_site_richness_map.png" alt="Map of beetle richness"></p>
 
 <h3>
 <a id="plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-trap-level" class="anchor" href="#plotting-latitudinal-gradients-of-beetle-abundance-and-richness-at-the-trap-level" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plotting latitudinal gradients of beetle abundance and richness at the trap level</h3>
@@ -207,28 +210,35 @@ plot(bet_field_bout$decimalLatitude,bet_field_bout$beetleRichness,xlab='Latitude
 <h3>
 <a id="precipitation-and-beetle-distributions" class="anchor" href="#precipitation-and-beetle-distributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Precipitation and beetle distributions</h3>
 
-<p>Precipitation was not homogeneous and largely fell in the southern and eastern US. Patterns of beetle abundance varied accordingly.
-    plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
-    sites &lt;- sites[order(sites[,'prcp']),]
-    sites$intensity &lt;- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue')
-    sites$cex &lt;- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
-    points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)</p>
+<p>Precipitation was not homogeneous and largely fell in the southern and eastern US. Patterns of beetle abundance varied accordingly.</p>
 
-<p><img src="images/by_site_rainfall_map.png" alt="Distribution of rainfall at across sites">
-    plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per trap',bg='blue',pch=21)
-    plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)</p>
+<pre><code>plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
+sites &lt;- sites[order(sites[,'prcp']),]
+sites$intensity &lt;- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue')
+sites$cex &lt;- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
+points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
+</code></pre>
+
+<p><img src="images/by_site_rainfall_map.png" alt="Distribution of rainfall at across sites"></p>
+
+<pre><code>plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per trap',bg='blue',pch=21)
+plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)
+</code></pre>
 
 <p><img src="images/rainfall.png" alt="Effect of rainfall on measured beetle abundance"></p>
 
 <h3>
 <a id="habitat-and-beetle-distributions" class="anchor" href="#habitat-and-beetle-distributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Habitat and beetle distributions</h3>
 
-<p>NLCD class is an included variable describing the habitat in which traps are embedded. Habitat type certainly seems to influence observed abundance and (to a lesser extent) richness.
-    par(mar=c(15,4.1,4.1,2.5))
-    nlcd$color &lt;- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
-    barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
-    barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
-<img src="images/nlcd_abundance.png" alt="Effect of habitat type on measured beetle abundance">
+<p>NLCD class is an included variable describing the habitat in which traps are embedded. Habitat type certainly seems to influence observed abundance and (to a lesser extent) richness.</p>
+
+<pre><code>par(mar=c(15,4.1,4.1,2.5))
+nlcd$color &lt;- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
+barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
+barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
+</code></pre>
+
+<p><img src="images/nlcd_abundance.png" alt="Effect of habitat type on measured beetle abundance">
 <img src="images/nlcd_richness.png" alt="Effect of habitat type on measured beetle richness"></p>
         </section>
 

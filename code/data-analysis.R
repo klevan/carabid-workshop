@@ -28,8 +28,7 @@ library(vegan)
 pathToData <- paste(path,'carabid-workshop/data/cleaned data',sep='/')
 setwd(pathToData)
 
-bet_div <- read.csv(paste(pathToData,"carabidAbundanceData.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
-bet_div1 <- read.csv(paste(pathToData,"carabidDiversityData.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
+bet_div <- read.csv(paste(pathToData,"carabidAbundanceDiversityData.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 bet_field <- read.csv(paste(pathToData,"fieldData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE); bet_field$beetleAbundance <- as.numeric(bet_field$beetleAbundance); bet_field$beetleRichness <- as.numeric(bet_field$beetleRichness) 
 bet_sort <- read.csv(paste(pathToData,"sortData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
 bet_pin <- read.csv(paste(pathToData,"pinData-cleaned.csv",sep='/'),stringsAsFactors = FALSE,header = TRUE) 
@@ -45,20 +44,23 @@ crs(Dmap) <- "+proj=utm +units=m +ellps=WGS84"
 # Treating the data correctly
 #############################
 bet_div$collectDate <- as.Date(bet_div$collectDate,format = '%m/%d/%Y'); bet_div$etOHChangeDate <- as.Date(bet_div$etOHChangeDate,format = '%m/%d/%Y'); bet_div$processingDate <- as.Date(bet_div$processingDate,format = '%m/%d/%Y'); bet_div$identifiedDate <- as.Date(bet_div$identifiedDate,format = '%m/%d/%Y'); bet_div$individualCount<- as.numeric(bet_div$individualCount)
-bet_div1$collectDate <- as.Date(bet_div1$collectDate,format = '%m/%d/%Y')
 bet_field$collectDate <- as.Date(bet_field$collectDate,format = '%m/%d/%Y'); bet_field$setDate <- as.Date(bet_field$setDate,format = '%m/%d/%Y')
 bet_sort$collectDate <- as.Date(bet_sort$collectDate,format = '%m/%d/%Y'); bet_sort$etOHChangeDate <- as.Date(bet_sort$etOHChangeDate,format = '%m/%d/%Y'); bet_sort$processingDate <- as.Date(bet_sort$processingDate,format = '%m/%d/%Y'); bet_sort$identifiedDate <- as.Date(bet_sort$identifiedDate,format = '%m/%d/%Y')
 bet_pin$collectDate <- as.Date(bet_pin$collectDate,format = '%m/%d/%Y'); bet_pin$processingDate <- as.Date(bet_pin$processingDate,format = '%m/%d/%Y'); bet_pin$identifiedDate <- as.Date(bet_pin$identifiedDate,format = '%m/%d/%Y')
 
-for (i in 1:dim(bet_div1)[1]){
-  bet_field %>% 
-    filter(plotID==bet_div1$plotID[i],trapID==bet_div1$trapID[i],
-           is.na(decimalLatitude)!=TRUE) -> a
-  bet_div1$decimalLatitude[i] <- a$decimalLatitude[1]
-  bet_div1$decimalLongitude[i] <- a$decimalLongitude[1]
-  bet_div1$nlcdClass[i] <- a$nlcdClass[1]
-  rm(a)
+for (i in 1:dim(bet_div)[1]){
+  if (is.na(bet_div$morphospeciesID[i])==TRUE){
+    bet_div$morphospeciesID[i] <- ''
+  }
+  if (is.na(bet_div$taxonID[i])==TRUE){
+    bet_div$taxonID[i] <- ''
+  }
 }
+bet_div$fieldID <- substr(bet_div$associatedSampleID,1,19)
+bet_div %>% 
+  left_join(bet_field[c('sampleID',"nlcdClass","decimalLatitude",
+                      "decimalLongitude","coordinateUncertainty","elevation",
+                      "elevationUncertainty")],by=c('fieldID'='sampleID')) -> bet_div
 
 ##########################################
 # Creating data frames at different levels
@@ -68,23 +70,24 @@ bet_field_plot <- unique.data.frame(bet_field[c("domainID","siteID","plotID","nl
                                                 "setDate","collectDate",'eventID')])
 for (i in unique(bet_field_plot$eventID)){
   bet_field %>% 
-    filter(eventID==i)->a
-  bet_div1 %>% 
-    # select(-sampleID,-trapID) %>% 
-    filter(plotID==substr(i,5,12),collectDate==bet_field_plot$collectDate[match(i,bet_field_plot$eventID)])-> div; div <- unique.data.frame(div[,c(1:3,5,7:10)])
+    filter(eventID==i)-> a
+  bet_div %>% 
+    filter(plotID==substr(i,5,12),collectDate==bet_field_plot$collectDate[match(i,bet_field_plot$eventID)])-> div
+  div <- unique.data.frame(div[,c(1:3,5,13,14,18,19)])
   div %>% 
-    filter(nchar(taxonID)<14)-> div1
+    filter(taxonID!='')-> div1
+  
   bet_field_plot$nlcdClass[match(i,bet_field_plot$eventID)] <- a$nlcdClass[1]
   bet_field_plot$decimalLatitude[match(i,bet_field_plot$eventID)] <- mean(a$decimalLatitude,na.rm = TRUE)
-  bet_field_plot$decimalLongitude[match(i,bet_field_plot$eventID)]<- mean(a$decimalLongitude,na.rm = TRUE)
-  bet_field_plot$geodeticDatum[match(i,bet_field_plot$eventID)]<- a$geodeticDatum[1]
-  bet_field_plot$coordinateUncertainty[match(i,bet_field_plot$eventID)]<- a$coordinateUncertainty[1]
-  bet_field_plot$elevation[match(i,bet_field_plot$eventID)]<- mean(a$elevation,na.rm = TRUE)
-  bet_field_plot$elevationUncertainty[match(i,bet_field_plot$eventID)]<- a$elevationUncertainty[1]
-  bet_field_plot$beetleAbundance[match(i,bet_field_plot$eventID)]<-sum(a$beetleAbundance)
+  bet_field_plot$decimalLongitude[match(i,bet_field_plot$eventID)] <- mean(a$decimalLongitude,na.rm = TRUE)
+  bet_field_plot$geodeticDatum[match(i,bet_field_plot$eventID)] <- a$geodeticDatum[1]
+  bet_field_plot$coordinateUncertainty[match(i,bet_field_plot$eventID)] <- a$coordinateUncertainty[1]
+  bet_field_plot$elevation[match(i,bet_field_plot$eventID)] <- mean(a$elevation,na.rm = TRUE)
+  bet_field_plot$elevationUncertainty[match(i,bet_field_plot$eventID)] <- a$elevationUncertainty[1]
+  bet_field_plot$beetleAbundance[match(i,bet_field_plot$eventID)] <-sum(div$individualCount)
+  
   bet_field_plot$beetleRichness[match(i,bet_field_plot$eventID)] <- dim(div)[1]
   bet_field_plot$beetleRichnessNoMorphospecies[match(i,bet_field_plot$eventID)] <- dim(div1)[1]
-  bet_field_plot$prcp[match(i,bet_field_plot$eventID)]<-mean(a$prcp)
   rm(a,div,div1)
 }
 
@@ -97,15 +100,13 @@ for (i in 1:dim(bet_field_bout)[1]){
   # Coordinates
   bet_field_bout$decimalLatitude[i] <- mean(a$decimalLatitude,na.rm=TRUE)
   bet_field_bout$decimalLongitude[i] <- mean(a$decimalLongitude,na.rm=TRUE)
-  # Rainfall
-  bet_field_bout$prcp[i]<-mean(a$prcp)
   # beetle Abundance
   bet_field_bout$beetleAbundance[i] <- sum(a$beetleAbundance)
   # beetle Richness
-  bet_div1 %>% 
-    #    select(-sampleID,-trapID,-plotID) %>% 
+  bet_div %>% 
     filter(domainID==bet_field_bout$domainID[i],siteID==bet_field_bout$siteID[i],
-           collectDate==bet_field_bout$collectDate[i]) -> a; a <- unique.data.frame(a[,c(1:2,5,7:10)])
+           collectDate==bet_field_bout$collectDate[i]) -> a 
+  a <- unique.data.frame(a[,c('taxonID','morphospeciesID')])
   bet_field_bout$beetleRichness[i] <- dim(a)[1]
 }
 
@@ -120,19 +121,15 @@ sites <- as.data.frame(cbind(siteID,locales)); rm(siteID)
 for (i in 1:dim(sites)[1]){
   bet_field %>% 
     filter(siteID==sites$siteID[i])-> a
-  bet_div1 %>% 
-    filter(siteID==sites$siteID[i])->div; div <- unique(div$taxonID)
-  bet_div1 %>% 
+  bet_div %>% 
+    filter(siteID==sites$siteID[i])-> div; div <- unique.data.frame(div[c("taxonID","morphospeciesID")])
+  bet_div %>% 
     filter(siteID==sites$siteID[i],scientificName!='')->div1; div1 <- unique(div1$scientificName)
   # temporal info
   sites$beginSampling[i] <- min(as.character(a$setDate),na.rm = TRUE)
   sites$endSampling[i] <- max(as.character(a$collectDate),na.rm = TRUE)
   sites$decimalLatitude[i] <- mean(a$decimalLatitude,na.rm = TRUE)
   sites$decimalLongitude[i] <- mean(a$decimalLongitude,na.rm = TRUE)
-  # precip data
-  weather %>% 
-    filter(siteID==sites$siteID[i],PRCP!='') -> w
-  sites$prcp[i] <- sum(w$PRCP,na.rm = TRUE) # mm of rain; divide by 25.4 to convert to inches
   # trapping effort
   sites$numTrapsSampled[i] <- dim(a)[1]
   bet_field_plot %>% 
@@ -140,11 +137,11 @@ for (i in 1:dim(sites)[1]){
   sites$numPlotsSampled[i] <- dim(a1)[1]
   # Organismal Data
   sites$numCarabidsCaught[i] <- sum(a$beetleAbundance)
-  sites$beetleRichness[i] <- length(div)
+  sites$beetleRichness[i] <- dim(div)[1]
   sites$beetleRichnessNoMorphospecies[i] <- length(div1)
   sites$numMammalsCaught[i] <- sum(a$numMammalsCaught,na.rm = TRUE)
   sites$numHerpsCaught[i] <- sum(a$numHerpsCaught,na.rm = TRUE)
-  rm(w,a,a1,div,div1)
+  rm(a,a1,div,div1)
 }
 
 
@@ -156,22 +153,22 @@ for (i in 1:dim(nlcd)[1]){
   bet_field %>% 
     #    select(plotID,nlcdClass) %>% 
     filter(nlcdClass==nlcd$types[i]) -> a1; a1 <- unique.data.frame(a1[c('plotID','nlcdClass')])
-  bet_div1 %>% 
-    filter(nlcdClass==nlcd$types[i])-> div; div <- unique.data.frame(div[c('taxonID','nlcdClass')])
+  bet_div %>% 
+    filter(nlcdClass==nlcd$types[i])-> div; div <- unique.data.frame(div[c('taxonID','morphospeciesID','nlcdClass')])
   nlcd$numPlotsSampled[i] <- dim(a1)[1]  
   nlcd$numTrapsSampled[i] <- dim(a)[1]
   nlcd$numMammalsCaught[i] <- sum(a$numMammalsCaught,na.rm = TRUE)
   nlcd$numHerpsCaught[i] <- sum(a$numHerpsCaught,na.rm = TRUE)
   nlcd$beetleAbundance[i] <- sum(a$beetleAbundance,na.rm=TRUE)
   nlcd$beetleRichness[i] <- dim(div)[1]
-  rm(a,a1)
+  rm(a,a1,div)
 }
 nlcd$herpsPerTrapNight <- nlcd$numHerpsCaught/(nlcd$numTrapsSampled*14) # Amount of herptile bycatch per nlcdClass per trapnight
 nlcd$mamPerTrapNight <- nlcd$numMammalsCaught/(nlcd$numTrapsSampled*14)   # Amount of mammal bycatch per nlcdClass per trapnight
 
 # Look at the list of species
 for(i in sites$siteID){
-  bet_div1 %>% 
+  bet_div %>% 
     filter(siteID==i,scientificName!='')->a 
   print(paste(i,'has',length(unique(a$scientificName)),'species',sep=' '))
   print(sort(unique(a$scientificName)))
@@ -219,13 +216,8 @@ plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Beetle Richness by Site',cex.main=3)
 sites <- sites[order(sites[,'beetleRichness']),]; sites$intensity <- heat.colors(13)[13:1]; sites$cex <- c(rep(1,4),rep(1.5,2),rep(2,4),rep(2.5,1),rep(3,1),rep(3.5,1))
 points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
 
-# Rainfall map
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Precipitation by Site',cex.main=3)
-sites <- sites[order(sites[,'prcp']),]; sites$intensity <- c(rep('white',3),rep('lightblue',3),rep('turquoise',3),rep('deepskyblue',2),'blue','darkblue'); sites$cex <- c(rep(1,3),rep(1.5,3),rep(2,3),rep(2.5,2),rep(3,1),rep(3.5,1))
-points(sites$decimalLongitude,sites$decimalLatitude,bg=sites$intensity,cex=sites$cex,pch=21)
-
 # Plot invasive species
-plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_div1 %>% filter(taxonID=='CARNEM')->CARNEM; bet_div1 %>% filter(taxonID=='TETLAE')->TETLAE
+plot(Dmap,col="#ADA96E",bg='#77BFC7',main='Invasive Species',cex.main=3); bet_div %>% filter(taxonID=='CARNEM')->CARNEM; bet_div %>% filter(taxonID=='TETLAE')->TETLAE
 points(CARNEM$decimalLongitude,CARNEM$decimalLatitude,pch=21,bg='violet',cex=2.5)
 points(TETLAE$decimalLongitude,TETLAE$decimalLatitude,pch=21,bg='orange',cex=2.5)
 
@@ -240,13 +232,8 @@ plot(bet_field_plot$decimalLatitude,bet_field_plot$beetleRichness,xlab='Latitude
 plot(bet_field$decimalLatitude,bet_field$beetleAbundance,xlab='Latitude',ylab='Beetle Abundance',pch=21,bg="darkblue")
 plot(bet_field$decimalLatitude,bet_field$beetleRichness,xlab='Latitude',ylab='Beetle Richness',pch=21,bg="darkblue")
 
-
-# Weather effects on catch
-plot(bet_field$prcp,bet_field$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per trap',bg='blue',pch=21)
-plot(bet_field_plot$prcp,bet_field_plot$beetleAbundance,xlab='Precipitation (mm)',ylab='Beetle Abundance per plot',bg='darkblue',pch=21)
-
 # Habitat effect on catch
-par(mar=c(15,4.1,4.1,2.5))
+par(mar=c(15,4.1,4.1,2.5),mfrow=c(1,1))
 nlcd$color <- c('goldenrod',rep('darkolivegreen1',2),'darkolivegreen2','darkolivegreen3',rep('forestgreen',3),'darkgreen')
 barplot(nlcd$beetleAbundance,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Abundance",xlab="",las=2)
 barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Richness",xlab="",las=2)
@@ -254,38 +241,42 @@ barplot(nlcd$beetleRichness,names.arg=nlcd$types,col=nlcd$color,ylab="Beetle Ric
 # Diving into site seasonal abundances
 par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1))
 for (i in sort(unique(sites$siteID))){
-  # Isolate the diversity within a site
-  bet_div1 %>% 
-    filter(siteID==i)-> x
-  # Figure out the abundance of each taxon separated by date
-  for (j in sort(unique(x$taxonID))){
-    # get records for things identified in the sort stage
-    bet_sort %>% filter(siteID==i,taxonID==j)->x_sort
-    x_sort$sampleID <- substr(x_sort$associatedSampleID,1,19)
-    
-    # get records identified from the pin stage
-    bet_pin %>% filter(siteID==i,taxonID==j,sampleType=='other carabid')->x_pin
-    x_pin$sampleID <- substr(x_pin$sampleID,1,19)
-    
-    # summarize records from both sources
-    x_all <- (rbind(x_pin[c('domainID','siteID','plotID','trapID','collectDate','sampleID','taxonID','individualCount','sampleType')],
-                    x_sort[c('domainID','siteID','plotID','trapID','collectDate','sampleID','taxonID','individualCount','sampleType')]))
-    x_all %>% 
-      group_by(collectDate) %>% 
-      summarise()-> x_date; x_date <- as.data.frame(sort(x_date$collectDate)); colnames(x_date)[1] <- 'collectDate'
-    # Determine counts
-    for (k in 1:dim(x_date)[1]){
-      x_date$count[k] <- sum(subset(x_all,collectDate==x_date$collectDate[k])$individualCount,na.rm=TRUE)
-    }
-    x_date$siteID <- i; x_date$taxonID <- j; x_date$color <- rainbow(n=length(unique(x$taxonID)))[match(j,sort(unique(x$taxonID)))]
-    # Create the list
-    if (j==sort(unique(x$taxonID))[1]){
-      a <- x_date
-    } else {
-      a <- rbind(a,x_date)
+  # Moving morphospeciesID to taxonID
+  a <- bet_div
+  for (l in 1:dim(a)[1]){
+    if (a$taxonID[l]=='' & a$morphospeciesID[l]!=""){
+      a$taxonID[l] <- a$morphospeciesID[l]
     }
   }
-  plot(a$collectDate,a$count,bg=a$color,pch=21,cex=3,cex.axis=2,
+  # Isolate the diversity within a site
+  a %>% 
+    filter(siteID==i) %>% 
+    group_by(collectDate,taxonID) %>% 
+    summarize() -> x; x <- as.data.frame(x); x %>% filter(taxonID!='')-> x
+  x <- x[order(x[,'collectDate']),]
+  
+  # Figure out the abundance of each taxon separated by date
+  for (j in 1:dim(x)[1]){
+    if(nchar(x$taxonID[j])<10){
+    bet_div %>% 
+      filter(siteID==i,collectDate==x$collectDate[j],taxonID==x$taxonID[j]) -> count
+    x$individualCount[j] <- sum(count$individualCount)
+    }
+    if(nchar(x$taxonID[j])>10){
+      bet_div %>% 
+        filter(siteID==i,collectDate==x$collectDate[j],morphospeciesID==x$taxonID[j]) -> count
+      x$individualCount[j] <- sum(count$individualCount)
+    }
+  }
+  x <- x[order(x[,'taxonID']),]
+  # Color each taxon differently
+  for (j in 1:dim(x)[1]){
+    for (k in sort(unique(x$taxonID))){
+      if(x$taxonID[j]==k){
+        x$color[j] <- rainbow(n=length(unique(x$taxonID)))[match(k,sort(unique(x$taxonID)))]
+      }
+    }
+  }
+  plot(x$collectDate,x$individualCount,pch=21,bg=x$color,cex=3,cex.axis=2,
        xlab='Date',ylab='Abundance',main=sites$locales[match(i,sites$siteID)])
 }
-rm(a,b,div,x,x_all,x_sort,x_pin,x_date)

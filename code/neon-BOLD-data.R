@@ -14,8 +14,8 @@ allNEONspecimens <- bold_specimens(institutions = "National Ecological Observato
 specimenPage <- "http://www.boldsystems.org/index.php/Public_RecordView?processid="
 
 # Grab image links for all samples 
-noImages <- vector() #dim(allNEONspecimens)[1]
-for(i in 1:10){
+noImages <- vector()
+for(i in 1:dim(allNEONspecimens)[1]){
   tmp <- try(query <- getNodeSet(htmlParse(paste0(specimenPage,allNEONspecimens$processid[i]),encoding = "UTF-8"),"//img"))
   if (class(tmp)=="try-error"){
     noImages <- c(noImages,allNEONspecimens$processid[i])
